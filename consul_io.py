@@ -1,20 +1,8 @@
 #!/usr/bin/env python
 
-#
-# (c) 2015, Steve Gargan <steve.gargan@gmail.com>
-#
-# This file is part of Ansible,
-#
-# Ansible is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Ansible is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
+# Modified version of ansibe consul inventory
+# original version by (c) 2015, Steve Gargan <steve.gargan@gmail.com>
+# Link: https://github.com/ansible/ansible/blob/devel/contrib/inventory/consul_io.py  
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
