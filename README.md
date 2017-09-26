@@ -6,7 +6,20 @@ Ansibe Consul Inventory
 
 ----------
     
-Example (output):
+Example:
+
+(consul)
+```
+consul kv get -recurse
+ansible/groups/zerodowntime/c2/Space:els
+ansible/groups/zerodowntime/c2/name:router
+ansible/groups/zerodowntime/c2/setup:dev
+ansible/groups/zerodowntime/c2/state:active
+ansible/groups/zerodowntime/c5/Setup:prod
+test:sample
+```
+
+(output):
  ```
  ./consul_io.py
 {
