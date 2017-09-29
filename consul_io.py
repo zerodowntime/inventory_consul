@@ -221,6 +221,36 @@ class ConsulInventory(object):
             self.load_all_data_consul()
 
         self.combine_all_results()
+
+        #
+        filtered_list = []
+        filtered_groups = []
+
+        # Filters
+        if self.config.instance_filters is not None:
+           for _filter in self.config.instance_filters.split(','):
+               for inventory_keys in self.inventory:
+                 if  inventory_keys in ['all','_meta']:
+                     continue
+                 if re.search(_filter, inventory_keys, re.I):
+                    if inventory_keys not in filtered_groups:
+                       filtered_groups.append(inventory_keys)
+                    for _host in self.inventory[inventory_keys]:
+                        if _host not in filtered_list:
+                            filtered_list.append(_host)
+
+        if self.config.instance_filters is not None:
+            for inventory_keys in self.inventory.keys():
+                if (inventory_keys not in filtered_groups) and (inventory_keys not in ['all','_meta']):
+                    self.inventory.pop(inventory_keys)
+                else:
+                    if inventory_keys == '_meta':
+                        for _meta_key in self.inventory['_meta']['hostvars'].keys():
+                            if _meta_key not in filtered_list:
+                                self.inventory['_meta']['hostvars'].pop(_meta_key)
+                    else:
+                        self.inventory[inventory_keys] = list(set(self.inventory[inventory_keys]).intersection(filtered_list))
+
         print(json.dumps(self.inventory, sort_keys=True, indent=2))
 
     def load_all_data_consul(self):
@@ -435,7 +465,7 @@ class ConsulConfig(dict):
         config_options = ['host', 'token', 'datacenter', 'servers_suffix',
                           'tags', 'kv_metadata', 'kv_groups', 'availability',
                           'unavailable_suffix', 'available_suffix', 'url',
-                          'domain']
+                          'domain','instance_filters']
         for option in config_options:
             value = None
             if config.has_option('consul', option):
