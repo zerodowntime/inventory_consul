@@ -2,9 +2,9 @@ Ansibe Consul Inventory
 ===================
 
 
- Modified version of [ansibe consul inventory](https://github.com/ansible/ansible/blob/devel/contrib/inventory/consul_io.py), allowing to create host groups similar as  `aws inventory`
+Modified version of [ansibe consul inventory](https://github.com/ansible/ansible/blob/devel/contrib/inventory/consul_io.py), allowing to create host groups similar as  `aws inventory`
 
-* HINT: * Ensure that you have python-consul module installed 
+**HINT:** Ensure that you have python-consul module installed 
 
 ```bash
 pip install python-consul
