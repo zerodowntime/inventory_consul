@@ -15,7 +15,7 @@ Example:
 
 (consul)
 ```
-consul kv get -recurse
+user@@ip-172-22-22-30> consul kv get -recurse
 ansible/groups/zerodowntime/ip-ip-172-22-22-30/AnsibleRelease:0.0.1
 ansible/groups/zerodowntime/ip-ip-172-22-22-30/AppRelease:None
 ansible/groups/zerodowntime/ip-ip-172-22-22-30/InstanceID:117
