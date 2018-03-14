@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
 # Modified version of ansibe consul inventory
+##
+## Zerodowntime Team <contact@zerodowntime.pl>  2018, https://zerodowntime.pl
+##
 # original version by (c) 2015, Steve Gargan <steve.gargan@gmail.com>
-# Link: https://github.com/ansible/ansible/blob/devel/contrib/inventory/consul_io.py  
+# Link: https://github.com/ansible/ansible/blob/devel/contrib/inventory/consul_io.py
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -296,6 +299,18 @@ class ConsulInventory(object):
         self.add_node_to_map(self.nodes, 'all', node)
         self.add_metadata(node_data, "consul_datacenter", datacenter)
         self.add_metadata(node_data, "consul_nodename", node['Node'])
+        self.add_metadata(node_data, "host_ip_addr", node['Address'])
+        self.load_groups_from_kv_to_host(node_data, "tag_AnsibleRelease")
+        self.load_groups_from_kv_to_host(node_data, "tag_AppRelease")
+        self.load_groups_from_kv_to_host(node_data, "tag_InstanceID")
+        self.load_groups_from_kv_to_host(node_data, "tag_Name")
+        self.load_groups_from_kv_to_host(node_data, "tag_ServiceVersion")
+        self.load_groups_from_kv_to_host(node_data, "tag_SessionId")
+        self.load_groups_from_kv_to_host(node_data, "tag_Setup")
+        self.load_groups_from_kv_to_host(node_data, "tag_Space")
+        self.load_groups_from_kv_to_host(node_data, "tag_State")
+        self.load_groups_from_kv_to_host(node_data, "tag_Type")
+        self.load_groups_from_kv_to_host(node_data, "tag_UUID")
 
         self.load_groups_from_kv(node_data)
         self.load_node_metadata_from_kv(node_data)
@@ -319,6 +334,23 @@ class ConsulInventory(object):
                         self.add_metadata(node_data, k, v)
                 except:
                     pass
+
+    def load_groups_from_kv_to_host(self, node_data, group_name):
+        from pprint import pprint
+
+        node = node_data['Node']
+        if self.config.has_config('kv_groups'):
+            key = "%s/%s/%s" % (self.config.kv_groups, node['Datacenter'], node['Node'])
+            index, groups = self.consul_api.kv.get(key, recurse=True,keys=False)
+
+            _key_prefix_c = len(key)+1
+            if groups:
+
+                for v in groups:
+                    tag =  'tag_' + v['Key'][_key_prefix_c:]
+                    if group_name == tag:
+                        self.add_metadata(node_data, group_name, v['Value'].strip())
+
 
     def load_groups_from_kv(self, node_data):
         ''' load the comma separated list of groups at the path defined by the
